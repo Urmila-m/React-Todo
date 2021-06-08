@@ -23,7 +23,6 @@ class TodoItemForm extends React.Component {
 
     handleSubmit = (e) =>{
         e.preventDefault();
-        console.log("On handle submit", this.state);
         let {redirect, ...data} = this.state;
 
         let apiUrl = API_URL;
@@ -58,12 +57,6 @@ class TodoItemForm extends React.Component {
         this.setState({redirect: true})
     }
 
-    getRedirectElem = ()=>{
-        if(this.state.redirect){
-            return <Redirect to="/home"/>
-        }
-    }
-
     getTitle(){
         if(this.state.id){
             return "Edit Todo Item";
@@ -74,32 +67,36 @@ class TodoItemForm extends React.Component {
     }
 
     render() { 
-        let {title, desc, is_completed, due_date} = this.state;
-        return ( 
-            <React.Fragment>
-                {this.getRedirectElem()}
-                <h3>{this.getTitle()}</h3>
-                <form>
-                    <div className="form-group">
-                        <label htmlFor="title">Title</label>
-                        <input type="text" value={title} name="title" className="form-control" id="title" placeholder="Enter title" onChange={this.handleChange}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="desc">Description</label>
-                        <textarea id="desc" name="desc" value={desc} className="form-control" onChange={this.handleChange}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="dueDate">Due Date</label>
-                        <input type="date" name="due_date" value={due_date} className="form-control" id="dueDate" onChange={this.handleChange}/>
-                    </div>
-                    <div className="form-check">
-                        <input type="checkbox" checked={is_completed} name="is_completed" className="form-check-input" id="completed" onChange={this.handleChange}/>
-                        <label className="form-check-label" htmlFor="completed">Completed</label>
-                    </div>
-                    <button className="btn btn-primary" onClick={(e) => {this.handleSubmit(e, this.state)}}>Submit</button>
-                </form>
-            </React.Fragment>
-        );
+        if(this.state.redirect){
+            return <Redirect to="/home"/>
+        }
+        else{
+            let {title, desc, is_completed, due_date} = this.state;
+            return ( 
+                <React.Fragment>
+                    <h3>{this.getTitle()}</h3>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="title">Title</label>
+                            <input type="text" value={title} name="title" className="form-control" id="title" placeholder="Enter title" onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="desc">Description</label>
+                            <textarea id="desc" name="desc" value={desc} className="form-control" onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="dueDate">Due Date</label>
+                            <input type="date" name="due_date" value={due_date} className="form-control" id="dueDate" onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-check">
+                            <input type="checkbox" checked={is_completed} name="is_completed" className="form-check-input" id="completed" onChange={this.handleChange}/>
+                            <label className="form-check-label" htmlFor="completed">Completed</label>
+                        </div>
+                        <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                    </form>
+                </React.Fragment>
+            );
+        }
     }
 }
 
