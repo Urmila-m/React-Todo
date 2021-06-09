@@ -10,15 +10,7 @@ function TodoList(){
     useEffect(()=> {
         fetch(API_URL)
         .then(res => res.json())
-        .then(jsonData =>{
-                let items = [];
-                jsonData.forEach(element => {
-                    let {id, title, desc: description, is_completed: isCompleted, due_date: dueDate} = element;
-                    items.push({id, title, description, isCompleted, dueDate})
-                });
-                setItems(items);
-            });
-        // .then(jsonData => this.setState({items: [jsonData.map(this.processData)]}));
+        .then(jsonData => setItems(jsonData.map(processData)));
 
         // equivalent to componentWillUnmount
         return ()=>{
@@ -41,8 +33,9 @@ function TodoList(){
             // delete successful
             if(res.status === 204){
                 let deletedItemIndex = items.indexOf(items.find(item => item.id === id));
-                items.splice(deletedItemIndex, 1);
-                setItems(items)
+                let remainingItems = [...items];
+                remainingItems.splice(deletedItemIndex, 1);
+                setItems(remainingItems);
             }
             else{
                 console.log("Something went wrong!")

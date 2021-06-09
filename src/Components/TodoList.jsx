@@ -16,15 +16,7 @@ class TodoList extends React.Component {
     componentDidMount(){
         fetch(API_URL)
         .then(res => res.json())
-        .then(jsonData =>{
-                let state = { items: []}
-                jsonData.forEach(element => {
-                    let {id, title, desc: description, is_completed: isCompleted, due_date: dueDate} = element;
-                    state.items.push({id, title, description, isCompleted, dueDate})
-                });
-                this.setState(state);
-            });
-        // .then(jsonData => this.setState({items: [jsonData.map(this.processData)]}));
+        .then(jsonData => this.setState({items: jsonData.map(this.processData)}));
     }
 
     componentWillUnmount(){
@@ -49,16 +41,6 @@ class TodoList extends React.Component {
                 console.log("Something went wrong!")
             }
         })
-    }
-
-    test =()=>{
-        // let items = this.state.items;
-        // items.map(item => console.log(item));
-        let items = [1, 2, 3, 4];
-        console.log(items instanceof Array);
-        console.log(this.state.items instanceof Array);
-        items.map(item => console.log(item));
-        this.state.items.map(item => console.log("item", item));
     }
 
     render() {

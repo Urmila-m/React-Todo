@@ -19,6 +19,11 @@ function TodoItemForm(props){
         return {id, title, description, isCompleted, dueDate};
     }
 
+    const reverseProcessData = (item) =>{
+        let {id, title, description: desc, isCompleted: is_completed, dueDate: due_date} = item;
+        return {id, title, desc, is_completed, due_date};
+    }
+
     useEffect(()=>{
         if(props.id){
             fetch(API_URL+props.id)
@@ -33,15 +38,18 @@ function TodoItemForm(props){
 
         let apiUrl = API_URL;
         let method = "POST";
+        let {id, ...data} = reverseProcessData(item);
+        let body = JSON.stringify(data);
         if(item.id){
             apiUrl += item.id+"/";
             method = "PUT";
+            body = JSON.stringify(reverseProcessData(item));
         }
 
         fetch(apiUrl,
         {
             "method": method,
-            "body": JSON.stringify(item),
+            "body": body,
             "headers": {"Content-type": "application/json; charset=UTF-8"}
         }).then(res => res.json())
         .then(jsonData => redirectToHome())
